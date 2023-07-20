@@ -1,0 +1,22 @@
+{
+  "name": "ad-network",
+  "version": "1.0.0",
+  "description": "Backend Service for Ad Network Platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "start:dev": "nodemon",
+    "build": "rimraf ./build && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HitJatin/ad-network-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HitJatin/ad-network-backend/issues"
+  },
+  "homepage": "https://github.com/HitJatin/ad-network-backend#readme"
+}
