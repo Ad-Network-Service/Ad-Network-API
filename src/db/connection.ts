@@ -1,5 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
+import { User } from "../models/User";
 import { Publisher } from "../models/Publisher";
+import { Advertiser } from "../models/Advertiser";
 
 const connection = new Sequelize({
   dialect: "postgres",
@@ -9,7 +11,7 @@ const connection = new Sequelize({
   database: process.env.DB_NAME,
   port: 5432,
   logging: false,
-  models: [Publisher]
+  models: [User, Publisher, Advertiser]
 });
 
 export default connection;

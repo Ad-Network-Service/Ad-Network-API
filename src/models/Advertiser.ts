@@ -1,12 +1,12 @@
-import { Table, Model, Column, DataType, AllowNull, AutoIncrement, PrimaryKey, Unique, Default, CreatedAt, UpdatedAt, BelongsTo, ForeignKey } from "sequelize-typescript";
+import { Table, Model, Column, DataType, AllowNull, AutoIncrement, PrimaryKey, CreatedAt, UpdatedAt, BelongsTo, ForeignKey } from "sequelize-typescript";
 import { User } from "./User";
 
 @Table({
     timestamps: true,
-    tableName: "publisher"
+    tableName: "advertiser"
 })
 
-export class Publisher extends Model {
+export class Advertiser extends Model {
     @AllowNull(false)
     @AutoIncrement
     @PrimaryKey
@@ -22,11 +22,23 @@ export class Publisher extends Model {
     })
     userId!: number;
 
-    @Unique
+    @AllowNull(false)
     @Column({
         type: DataType.STRING
     })
-    username!: string
+    website!: string
+
+    @AllowNull(false)
+    @Column({
+        type: DataType.STRING
+    })
+    category!: string
+
+    @AllowNull(false)
+    @Column({
+        type: DataType.STRING
+    })
+    country!: string
 
     @BelongsTo(() => User)
     user!: User

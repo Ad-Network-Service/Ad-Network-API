@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import publisherRoute from './publisher.route'
+import userRouter from "./user.route"
 
 const router = Router();
 
-router.use('/publisher', publisherRoute)
+router.use("/user", userRouter)
 
 export default router;
