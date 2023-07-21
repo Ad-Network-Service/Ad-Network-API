@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 dotenv.config({path:"./src/config/config.env"});
 import connection from "./db/connection"
 
-// import routes from "./routes/routes";
+import routes from "./routes/routes";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,7 +13,7 @@ connection.sync().then(() => {
 });
 
 app.use(express.json());
-// app.use('/api', routes)
+app.use('/api', routes)
 app.get("*", (req, res) => {
 	res.status(400).send("Page not found");
 });

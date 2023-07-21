@@ -32,6 +32,12 @@ export class Publisher extends Model {
     })
     email!: string
 
+    @Unique
+    @Column({
+        type: DataType.STRING
+    })
+    phone!: string
+
     @AllowNull(false)
     @Column({
         type: DataType.STRING
