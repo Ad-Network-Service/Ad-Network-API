@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
-import { Publisher } from "../models/Publisher";
+import { User } from "../models/User";
 
 const JWTKEY: string = process.env.JWTKEY || "MYNAME-IS-HELLOWORLD";
 
@@ -31,15 +31,15 @@ export const verifyToken: RequestHandler = async (req, res, next) => {
                     data: [],
                 });
             }
-            const checkPublisher = await Publisher.findOne({ where: { signedToken: token, id } });
-            if (!checkPublisher) {
+            const checkUser = await User.findOne({ where: { signedToken: token, id } });
+            if (!checkUser) {
                 return res.status(400).json({
                     sucess: false,
                     message: "Authentication Failed ",
                     data: [],
                 });
             }
-            req.body.publisher = checkPublisher;
+            req.body.user = checkUser;
             next();
         });
 

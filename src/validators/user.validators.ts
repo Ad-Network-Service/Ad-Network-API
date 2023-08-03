@@ -3,25 +3,16 @@ import Joi from "joi";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "../models/User";
+import { Publisher } from "../models/Publisher";
 
 const JWTKEY: string = process.env.JWTKEY || "MYNAME-IS-HELLOWORLD";
 
 export const validateSignUp: RequestHandler = async (req, res, next) => {
     try {
         const signUpSchema = Joi.object({
-            firstName: Joi.string()
-                .pattern(/^[a-zA-Z ]+$/),
-
-            lastName: Joi.string()
-                .pattern(/^[a-zA-Z ]+$/),
-
             email: Joi.string()
                 .email()
                 .required(),
-                
-            phone: Joi.string(),
-
-            type: Joi.string(),
 
             password: Joi.string()
                 .min(8)
@@ -30,7 +21,7 @@ export const validateSignUp: RequestHandler = async (req, res, next) => {
         })
 
         const value = await signUpSchema.validateAsync(req.body);
-        const { email, phone } = value;
+        const { email } = value;
         const existingUser = await User.findOne({ where: { email } });
         if (existingUser) {
             return res.status(400).json({
@@ -38,16 +29,6 @@ export const validateSignUp: RequestHandler = async (req, res, next) => {
                 message: "User with this email already exists!",
                 data: [],
             });
-        }
-        if(phone) {
-            const checkPhone = await User.findOne({ where: { phone } });
-            if (checkPhone) {
-                return res.status(404).json({
-                    success: false,
-                    message: "User with this Phone number already Exist!",
-                    data: [],
-                });
-            }
         }
         next();
 
@@ -184,3 +165,75 @@ export const validateSigninInfo: RequestHandler = async (req, res, next) => {
         });
     }
 };
+
+export const validateTypeInfo: RequestHandler =async (req, res, next) => {
+    try {
+        const typeSchema = Joi.object({
+            type: Joi.string()
+                .pattern(/^[a-z]+$/)
+                .required(),
+
+            firstName: Joi.string()
+                .pattern(/^[a-zA-Z ]+$/)
+                .required(),
+
+            lastName: Joi.string()
+                .pattern(/^[a-zA-Z ]+$/)
+                .required(),
+
+            username: Joi.string()
+                .alphanum()
+                .min(5)
+                .max(30),
+                
+            companySite: Joi.string(),
+
+            companyCategory: Joi.string(),
+
+            country: Joi.string(),
+
+            phone: Joi.string(),
+
+            user: Joi.any()
+        })
+
+        const value = await typeSchema.validateAsync(req.body);
+        const { type, username, phone } = value;
+
+        if(!['advertiser', 'publisher'].includes(type))
+        return res.status(400).json({
+            success: false,
+            message: "This type of account doesn't exist as of now",
+            data: []
+        });
+        
+        if(username) {
+            const checkUsername = await Publisher.findOne({ where: { username } });
+            if (checkUsername) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User with this username already Exist!",
+                    data: [],
+                });
+            }
+        }
+        if(phone) {
+            const checkPhone = await User.findOne({ where: { phone, isPhoneVerified: true}})
+            if (checkPhone) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User with this phone number already Exist!",
+                    data: [],
+                });
+            }
+        }
+        next();
+
+    } catch (error: any) {
+        return res.status(504).json({
+            success: false,
+            message: error.message,
+            data: [],
+        });
+    }
+}

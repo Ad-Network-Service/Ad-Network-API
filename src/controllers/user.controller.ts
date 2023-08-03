@@ -2,7 +2,8 @@ import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { securePass } from "../helpers/auth.helper";
 import { User } from "../models/User";
-
+import { Advertiser } from "../models/Advertiser";
+import { Publisher } from "../models/Publisher";
 const JWTKEY: string = process.env.JWTKEY || "MYNAME-IS-HELLOWORLD";
 
 export const signup: RequestHandler = async (req, res) => {
@@ -159,6 +160,88 @@ export const signin: RequestHandler = async (req, res) => {
                 },
             ],
         });
+    } catch (error: any) {
+        return res.status(504).json({
+            success: false,
+            message: error.message,
+            data: [],
+        });
+    }
+};
+
+export const setAccountType: RequestHandler = async (req, res) => {
+    try {
+        const { firstName, lastName, phone, type, user, companySite, companyCategory, country, username } = req.body;
+        if(type == 'advertiser') {
+            await User.update(
+                {
+                    firstName, lastName, phone, type
+                },
+                {
+                    where: { id: user?.id }
+                }
+            )
+
+            const newAdvertiser = new Advertiser({
+                userId: user.id,
+                website: companySite,
+                category: companyCategory,
+                country
+            });
+            const advertiser = await newAdvertiser.save();
+            if (advertiser) {
+                return res.status(201).json({
+                    success: true,
+                    message: `You're now registered as an advertiser`,
+                    data: [
+                        {
+                            Email: user.email
+                        },
+                    ],
+                });
+            } else {
+                return res.status(400).json({
+                    success: false,
+                    message: "Your registration has been failed!",
+                    data: [],
+                });
+            }
+        }
+
+        else if(type == 'publisher') {
+            await User.update(
+                {
+                    firstName, lastName, type
+                },
+                {
+                    where: { id: user?.id }
+                }
+            )
+
+            const newPublisher = new Publisher({
+                userId: user.id,
+                username
+            });
+            const publisher = await newPublisher.save();
+            if (publisher) {
+                return res.status(201).json({
+                    success: true,
+                    message: `You're now registered as a publisher`,
+                    data: [
+                        {
+                            Email: user.email
+                        },
+                    ],
+                });
+            } else {
+                return res.status(400).json({
+                    success: false,
+                    message: "Your registration has been failed!",
+                    data: [],
+                });
+            }
+        }
+
     } catch (error: any) {
         return res.status(504).json({
             success: false,
