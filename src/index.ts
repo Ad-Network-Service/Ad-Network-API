@@ -13,10 +13,9 @@ connection.sync().then(() => {
 });
 
 app.use(express.json());
-app.use('/', (req, res) => {
-	res.status(201).send("Hello World")
-})
+
 app.use('/api', routes)
+
 app.get("*", (req, res) => {
 	res.status(400).send("Page not found");
 });
