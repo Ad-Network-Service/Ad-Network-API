@@ -8,9 +8,9 @@ import routes from "./routes/routes";
 const app = express();
 const port = process.env.PORT || 3000;
 
-// connection.sync().then(() => {
-//     console.log("Database synced successfully");
-// });
+connection.sync().then(() => {
+    console.log("Database synced successfully");
+});
 
 app.use(express.json());
 app.use('/', (req, res) => {

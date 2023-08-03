@@ -29,12 +29,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: "./src/config/config.env" });
+const connection_1 = __importDefault(require("./db/connection"));
 const routes_1 = __importDefault(require("./routes/routes"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
-// connection.sync().then(() => {
-//     console.log("Database synced successfully");
-// });
+connection_1.default.sync().then(() => {
+    console.log("Database synced successfully");
+});
 app.use(express_1.default.json());
 app.use('/', (req, res) => {
     res.status(201).send("Hello World");
