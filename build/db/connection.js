@@ -37,6 +37,9 @@ const connection = new sequelize_typescript_1.Sequelize({
     database: process.env.DB_NAME,
     port: 5432,
     logging: false,
+    dialectOptions: {
+        ssl: "true"
+    },
     models: [User_1.User, Publisher_1.Publisher, Advertiser_1.Advertiser]
 });
 exports.default = connection;

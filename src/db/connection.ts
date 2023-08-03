@@ -13,6 +13,9 @@ const connection = new Sequelize({
   database: process.env.DB_NAME,
   port: 5432,
   logging: false,
+  dialectOptions: {
+    ssl:"true"
+  },
   models: [User, Publisher, Advertiser]
 });
 
