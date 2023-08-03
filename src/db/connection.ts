@@ -14,7 +14,10 @@ const connection = new Sequelize({
   port: 5432,
   logging: false,
   dialectOptions: {
-    ssl:"true"
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
   },
   models: [User, Publisher, Advertiser]
 });
