@@ -31,10 +31,10 @@ const Advertiser_1 = require("../models/Advertiser");
 const connection = new sequelize_typescript_1.Sequelize({
     dialect: "postgres",
     dialectModule: pg,
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: 'ep-lively-queen-42128605-pooler.us-east-1.postgres.vercel-storage.com',
+    username: 'default',
+    password: 'vKHwhcx43uLm',
+    database: 'verceldb',
     port: 5432,
     logging: false,
     dialectOptions: {
