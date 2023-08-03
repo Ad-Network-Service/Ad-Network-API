@@ -7,8 +7,15 @@
     "start": "node build/index.js",
     "start:dev": "nodemon",
     "build": "rimraf ./build && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HitJatin/ad-network-backend.git"
@@ -26,6 +33,7 @@
     "jsonwebtoken": "^9.0.1",
     "nodemailer": "^6.9.4",
     "pg": "^8.11.1",
+    "pre-commit": "^1.2.2",
     "sequelize": "^6.32.1",
     "sequelize-typescript": "^2.1.5"
   },
