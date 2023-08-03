@@ -1,3 +1,4 @@
+import * as pg from 'pg';
 import { Sequelize } from "sequelize-typescript";
 import { User } from "../models/User";
 import { Publisher } from "../models/Publisher";
