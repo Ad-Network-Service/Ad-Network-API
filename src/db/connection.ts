@@ -6,6 +6,7 @@ import { Advertiser } from "../models/Advertiser";
 
 const connection = new Sequelize({
   dialect: "postgres",
+  dialectModule: pg,
   host: process.env.DB_HOST,
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
