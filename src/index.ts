@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import * as dotenv from "dotenv";
 dotenv.config({path:"./src/config/config.env"});
 import connection from "./db/connection"
@@ -14,7 +15,15 @@ connection.sync().then(() => {
 
 app.use(express.json());
 
-app.use('/api', routes)
+const allowedOrigins = ['http://localhost:3000'];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins
+};
+
+app.use(cors(options));
+
+app.use('/api', routes);
 
 app.get("*", (req, res) => {
 	res.status(400).send("Page not found");

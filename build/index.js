@@ -27,6 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: "./src/config/config.env" });
 const connection_1 = __importDefault(require("./db/connection"));
@@ -37,6 +38,11 @@ connection_1.default.sync().then(() => {
     console.log("Database synced successfully");
 });
 app.use(express_1.default.json());
+const allowedOrigins = ['http://localhost:3000'];
+const options = {
+    origin: allowedOrigins
+};
+app.use((0, cors_1.default)(options));
 app.use('/api', routes_1.default);
 app.get("*", (req, res) => {
     res.status(400).send("Page not found");
