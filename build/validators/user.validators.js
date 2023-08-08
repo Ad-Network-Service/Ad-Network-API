@@ -112,7 +112,7 @@ const validateActivationInfo = (req, res, next) => __awaiter(void 0, void 0, voi
         else {
             return res.status(400).json({
                 success: false,
-                message: `Publisher not found`,
+                message: `User not found`,
                 data: []
             });
         }

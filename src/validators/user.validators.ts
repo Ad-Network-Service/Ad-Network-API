@@ -104,7 +104,7 @@ export const validateActivationInfo: RequestHandler = async (req, res, next) => 
         else {
             return res.status(400).json({
                 success: false,
-                message: `Publisher not found`,
+                message: `User not found`,
                 data: []
             });
         }
