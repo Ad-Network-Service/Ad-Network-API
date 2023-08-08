@@ -22,4 +22,6 @@ const connection = new Sequelize({
   models: [User, Publisher, Advertiser]
 });
 
+// connection.truncate({ cascade: true, restartIdentity: true });
+
 export default connection;

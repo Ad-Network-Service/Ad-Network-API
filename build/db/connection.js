@@ -45,4 +45,5 @@ const connection = new sequelize_typescript_1.Sequelize({
     },
     models: [User_1.User, Publisher_1.Publisher, Advertiser_1.Advertiser]
 });
+// connection.truncate({ cascade: true, restartIdentity: true });
 exports.default = connection;

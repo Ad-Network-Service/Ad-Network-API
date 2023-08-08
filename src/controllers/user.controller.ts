@@ -11,24 +11,20 @@ const JWTKEY: string = process.env.JWTKEY || "MYNAME-IS-HELLOWORLD";
 
 export const signup: RequestHandler = async (req, res) => {
     try {
-        const { firstName, lastName, email, phone, type, password } = req.body;
+        const { email, password } = req.body;
         const sPass = await securePass(password);
 
         const token = jwt.sign({ email }, JWTKEY, {
             expiresIn: "2h",
         });
         const newUser = new User({
-            firstName,
-            lastName,
             email,
-            phone,
-            type,
             password : sPass,
             token
         });
         const user = await newUser.save();
         if (user) {
-            const isMailSent = await sendVerifyMail(firstName, email, token);
+            const isMailSent = await sendVerifyMail(email, token);
 
             if (isMailSent){
                 res.setHeader("Token", token)
@@ -270,7 +266,7 @@ export const setAccountType: RequestHandler = async (req, res) => {
     }
 };
 
-const sendVerifyMail = async (name: string, email: string, token: string) => {
+const sendVerifyMail = async (email: string, token: string) => {
     try {
         let transport = nodemailer.createTransport({
             host: MAIL_HOST,
@@ -327,7 +323,7 @@ const sendVerifyMail = async (name: string, email: string, token: string) => {
             <body>
                 <div class="container">
                     <h1>Account Verification</h1>
-                    <p>Hi ${name},</p>
+                    <p>Dear User,</p>
                     <p>Thank you for creating an account with us. Please click the link below to verify your account:</p>
                     <p><a href="${FRONTEND_BASE_URL}verify?token=${token}">Verify Account</a></p>
                     <p>If the link above doesn't work, you can copy and paste the following URL into your browser:</p>

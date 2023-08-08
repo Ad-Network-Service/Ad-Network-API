@@ -23,23 +23,19 @@ const { MAIL_HOST, MAIL_PORT, MAIL_USER, MAIL_PASS, MAIL_ACC, FRONTEND_BASE_URL 
 const JWTKEY = process.env.JWTKEY || "MYNAME-IS-HELLOWORLD";
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { firstName, lastName, email, phone, type, password } = req.body;
+        const { email, password } = req.body;
         const sPass = yield (0, auth_helper_1.securePass)(password);
         const token = jsonwebtoken_1.default.sign({ email }, JWTKEY, {
             expiresIn: "2h",
         });
         const newUser = new User_1.User({
-            firstName,
-            lastName,
             email,
-            phone,
-            type,
             password: sPass,
             token
         });
         const user = yield newUser.save();
         if (user) {
-            const isMailSent = yield sendVerifyMail(firstName, email, token);
+            const isMailSent = yield sendVerifyMail(email, token);
             if (isMailSent) {
                 res.setHeader("Token", token);
                 return res.status(201).json({
@@ -253,7 +249,7 @@ const setAccountType = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.setAccountType = setAccountType;
-const sendVerifyMail = (name, email, token) => __awaiter(void 0, void 0, void 0, function* () {
+const sendVerifyMail = (email, token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let transport = nodemailer_1.default.createTransport({
             host: MAIL_HOST,
@@ -310,7 +306,7 @@ const sendVerifyMail = (name, email, token) => __awaiter(void 0, void 0, void 0,
             <body>
                 <div class="container">
                     <h1>Account Verification</h1>
-                    <p>Hi ${name},</p>
+                    <p>Dear User,</p>
                     <p>Thank you for creating an account with us. Please click the link below to verify your account:</p>
                     <p><a href="${FRONTEND_BASE_URL}verify?token=${token}">Verify Account</a></p>
                     <p>If the link above doesn't work, you can copy and paste the following URL into your browser:</p>
