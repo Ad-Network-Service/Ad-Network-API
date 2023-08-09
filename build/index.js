@@ -40,7 +40,8 @@ connection_1.default.sync().then(() => {
 app.use(express_1.default.json());
 const allowedOrigins = ['http://localhost:3000'];
 const options = {
-    origin: allowedOrigins
+    origin: allowedOrigins,
+    exposedHeaders: 'Token'
 };
 app.use((0, cors_1.default)(options));
 app.use('/api', routes_1.default);

@@ -37,7 +37,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (user) {
             const isMailSent = yield sendVerifyMail(email, token);
             if (isMailSent) {
-                res.setHeader("Token", token);
+                res.setHeader("Token", token); //TODO: can be removed only for testing in postman
                 return res.status(201).json({
                     success: true,
                     message: `Your Registraton has been successfull please verify your mail`,
@@ -82,23 +82,24 @@ const resendToken = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }, {
             where: { id: user.id }
         });
-        // const isMailSent = await sendVerifyMail(publisher.firstName, publisher.email, token);
-        // if (isMailSent)
-        res.setHeader("Token", token);
-        return res.status(201).json({
-            success: true,
-            message: `Verification code sent succesfull, please verify your mail`,
-            data: [
-                {
-                    Email: user.email
-                },
-            ],
+        const isMailSent = yield sendVerifyMail(user.email, token);
+        if (isMailSent) {
+            res.setHeader("Token", token); //TODO: can be removed only for testing in postman
+            return res.status(201).json({
+                success: true,
+                message: `Verification code sent succesfull, please verify your mail`,
+                data: [
+                    {
+                        Email: user.email
+                    },
+                ],
+            });
+        }
+        return res.status(400).json({
+            success: false,
+            message: "Some error occured. Please try again later.",
+            data: []
         });
-        // return res.status(400).json({
-        //     success: false,
-        //     message: "Some error occured. Please try again later.",
-        //     data: []
-        // })
     }
     catch (error) {
         return res.status(504).json({

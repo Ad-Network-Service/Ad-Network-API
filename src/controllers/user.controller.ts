@@ -27,7 +27,7 @@ export const signup: RequestHandler = async (req, res) => {
             const isMailSent = await sendVerifyMail(email, token);
 
             if (isMailSent){
-                res.setHeader("Token", token)
+                res.setHeader("Token", token) //TODO: can be removed only for testing in postman
                 return res.status(201).json({
                     success: true,
                     message: `Your Registraton has been successfull please verify your mail`,
@@ -74,24 +74,25 @@ export const resendToken: RequestHandler = async (req, res) => {
                 where: { id: user.id }
             },
         );
-        // const isMailSent = await sendVerifyMail(publisher.firstName, publisher.email, token);
+        const isMailSent = await sendVerifyMail(user.email, token);
 
-        // if (isMailSent)
-        res.setHeader("Token", token)
-        return res.status(201).json({
-            success: true,
-            message: `Verification code sent succesfull, please verify your mail`,
-            data: [
-                {
-                    Email: user.email
-                },
-            ],
-        });
-        // return res.status(400).json({
-        //     success: false,
-        //     message: "Some error occured. Please try again later.",
-        //     data: []
-        // })
+        if (isMailSent) {
+            res.setHeader("Token", token) //TODO: can be removed only for testing in postman
+            return res.status(201).json({
+                success: true,
+                message: `Verification code sent succesfull, please verify your mail`,
+                data: [
+                    {
+                        Email: user.email
+                    },
+                ],
+            });
+        }
+        return res.status(400).json({
+            success: false,
+            message: "Some error occured. Please try again later.",
+            data: []
+        })
 
     } catch (error: any) {
         return res.status(504).json({
