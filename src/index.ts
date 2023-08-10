@@ -15,7 +15,7 @@ connection.sync().then(() => {
 
 app.use(express.json());
 
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['http://localhost:3000', "https://ad-network-ui.vercel.app"];
 
 const options: cors.CorsOptions = {
   origin: allowedOrigins,

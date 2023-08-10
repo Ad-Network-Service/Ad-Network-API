@@ -38,7 +38,7 @@ connection_1.default.sync().then(() => {
     console.log("Database synced successfully");
 });
 app.use(express_1.default.json());
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['http://localhost:3000', "https://ad-network-ui.vercel.app"];
 const options = {
     origin: allowedOrigins,
     exposedHeaders: 'Token'
